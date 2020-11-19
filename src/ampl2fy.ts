@@ -1,1 +1,1 @@
-console.log("Welcome to ampl2fy!");
+console.log('Welcome to ampl2fy!');
