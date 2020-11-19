@@ -3,7 +3,7 @@ import { Playlist } from '../model/Playlist';
 import { Song } from '../model/Song';
 
 export default class Scraper {
-  static getPlaylist(html: string): Playlist | null {
+  static getPlaylist(html: string): Playlist {
     const $ = cheerio.load(html);
 
     const titles: string[] = [];
