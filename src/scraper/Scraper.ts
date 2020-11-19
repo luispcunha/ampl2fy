@@ -27,10 +27,16 @@ export default class Scraper {
     const durations: number[] = [];
     const durationsElem = $('div.col.col-time').not('.typography-footnote');
     durationsElem.each((i, elem) => {
-      console.log($(elem).find('.time-data').text().trim()
-        .replace(':', '.'));
-      const duration: number = parseFloat($(elem).find('.time-data').text().trim()
-        .replace(':', '.'));
+      const durationSplit = $(elem).find('.time-data').text()
+        .trim()
+        .split(':')
+        .reverse();
+
+      let duration = 0;
+      durationSplit.forEach((num, exp) => {
+        duration += 60 ** exp * parseInt(num, 10);
+      });
+
       durations.push(duration);
     });
 
