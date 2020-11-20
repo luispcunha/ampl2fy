@@ -1,8 +1,11 @@
 import axios from 'axios';
 import program from 'commander';
+import dotenv from 'dotenv';
 import Scraper from './scraper/Scraper';
 
 (async () => {
+  dotenv.config();
+
   program
     .version('1.0.0')
     .option('-pl, --playlist <url>', 'Apple Music playlist URL');
