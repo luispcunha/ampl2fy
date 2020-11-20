@@ -1,6 +1,6 @@
 import axios from 'axios';
-import program from 'commander';
 import dotenv from 'dotenv';
+import prompts from 'prompts';
 import Scraper from './scraper/Scraper';
 import { auth } from './auth/auth';
 
@@ -25,21 +25,17 @@ if (port === null) {
   process.exit(-1);
 }
 
-program
-  .version('1.0.0')
-  .option('-pl, --playlist <url>', 'Apple Music playlist URL');
-program.parse(process.argv);
-
-const url = program.playlist;
-
 auth(clientId, clientSecret, port, async (tokens) => {
   console.log(tokens);
 
-  if (url === undefined) {
-    return;
-  }
+  const input = await prompts({
+    type: 'text',
+    name: 'url',
+    message: 'Which Apple Music playlist would you like to convert?',
+    validate: (url: string) => (url.startsWith('https://music.apple.com/us/playlist') ? true : 'That doesn\'t look like a valid url :('),
+  });
 
-  const response = await axios.get(url);
+  const response = await axios.get(input.url);
   const html: string = response.data;
 
   console.log(Scraper.getPlaylist(html));
