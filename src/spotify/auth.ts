@@ -23,7 +23,13 @@ function generateRandomString(length: number): string {
 // eslint-disable-next-line no-unused-vars
 type CallbackType = (t: AuthTokens) => void;
 
-function auth(clientId: string, clientSecret: string, port: string, callback: CallbackType): void {
+function auth(
+  clientId: string,
+  clientSecret: string,
+  scope: string,
+  port: string,
+  callback: CallbackType,
+): void {
   const stateKey = 'spotify_auth_state';
 
   const app = express();
@@ -36,7 +42,6 @@ function auth(clientId: string, clientSecret: string, port: string, callback: Ca
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
 
-    const scope = 'user-read-private user-read-email';
     const redirectUri = `http://localhost:${port}/callback`;
 
     const query = querystring.stringify({
