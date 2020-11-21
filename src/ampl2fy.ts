@@ -47,7 +47,19 @@ auth(clientId, clientSecret, scope, port, async (tokens) => {
   const html: string = response.data;
 
   const playlist = Scraper.getPlaylist(html);
+  console.log('Playlist:');
+  playlist.songs.forEach((song, idx) => {
+    console.log(`  ${idx + 1}. ${song.title} - ${song.album} - by ${song.artist}`);
+  });
 
-  
+  const tracks: string[] = [];
 
+  playlist.songs.forEach(async (song) => {
+    const uri = await spotify.searchClosestTrack(song);
+    tracks.push(uri);
+  });
+
+  const playlistID = await spotify.createPlaylist(userID, playlist.name, playlist.description);
+
+  await spotify.addTracksPlaylist(playlistID, tracks);
 });

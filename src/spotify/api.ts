@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { Song } from '../model/Song';
 
 export default class SpotifyAPI {
   instance: AxiosInstance;
@@ -19,20 +20,32 @@ export default class SpotifyAPI {
     return info.data;
   }
 
-  async createPlaylist(user: string, name: string, description: string, isPublic: boolean) {
+  async createPlaylist(user: string, name: string, description: string, isPublic = false) {
     const response = await this.instance.post(`v1/users/${user}/playlists`, {
       name, description, public: isPublic,
     });
-    return response;
+    return response.data.id;
   }
 
-  async searchTracks(query: string, limit: number) {
+  async search(query: string, type: string, limit: number) {
     const results = await this.instance.get('v1/search', {
       params: {
-        q: query, type: 'track', limit,
+        q: query, type, limit,
       },
     });
 
-    return results.data.tracks.items;
+    return results;
+  }
+
+  async addTracksPlaylist(playlistID: string, uris: string[]) {
+    const response = await this.instance.post(`v1/playlists/${playlistID}/tracks`, { uris });
+
+    return response.status;
+  }
+
+  async searchClosestTrack(song: Song): Promise<string> {
+    const query = `${song.title}`; // album:${song.album} artist:${song.artist}`;
+    const results = await this.search(query, 'track', 1);
+    return results.data.tracks.items[0].uri;
   }
 }
