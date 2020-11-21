@@ -52,14 +52,14 @@ auth(clientId, clientSecret, scope, port, async (tokens) => {
     console.log(`  ${idx + 1}. ${song.title} - ${song.album} - by ${song.artist}`);
   });
 
-  const tracks: string[] = [];
+  const uriPromises: Promise<string>[] = [];
 
-  playlist.songs.forEach(async (song) => {
-    const uri = await spotify.searchClosestTrack(song);
-    tracks.push(uri);
+  playlist.songs.forEach((song) => {
+    uriPromises.push(spotify.searchClosestTrack(song));
   });
 
-  const playlistID = await spotify.createPlaylist(userID, playlist.name, playlist.description);
+  const tracks: string[] = await Promise.all(uriPromises);
 
+  const playlistID = await spotify.createPlaylist(userID, playlist.name, playlist.description);
   await spotify.addTracksPlaylist(playlistID, tracks);
 });
