@@ -21,7 +21,6 @@ export default class Scraper {
     albumsElem.each((i, elem) => {
       const album: string = $(elem).find('.dt-link-to').text().trim();
       albums.push(album);
-      console.log(album);
     });
 
     const durations: number[] = [];
@@ -50,9 +49,14 @@ export default class Scraper {
       });
     });
 
-    const description = '';
+    const description = $('div.product-page-header__notes > div > div > span > p').children().remove().end()
+      .text()
+      .trim();
+
+    const name = $('#page-container__first-linked-element').text().trim();
 
     return {
+      name,
       description,
       songs,
     };

@@ -29,26 +29,25 @@ if (port === null) {
 const scope = 'user-read-private playlist-modify-public playlist-modify-private playlist-read-private';
 
 auth(clientId, clientSecret, scope, port, async (tokens) => {
-  console.log(tokens.accessToken);
-
   const spotify = new SpotifyAPI(tokens.accessToken);
   const userInfo = await spotify.getUserProfile();
   const userID = userInfo.id;
 
-  console.log(`Welcome ${userInfo.display_name}!`);
+  console.log(`\nWelcome ${userInfo.display_name}!\n`);
 
-  const info = await spotify.createPlaylist(userID, 'teste', 'just created', false);
-  console.log(info);
+  const input = await prompts({
+    type: 'text',
+    name: 'url',
+    message: 'Which Apple Music playlist would you like to convert?',
+    validate: (url: string) => (url.startsWith('https://music.apple.com/us/playlist') ? true : 'That doesn\'t look like a valid url :('),
+  });
 
-  // const input = await prompts({
-  //   type: 'text',
-  //   name: 'url',
-  //   message: 'Which Apple Music playlist would you like to convert?',
-  //   validate: (url: string) => (url.startsWith('https://music.apple.com/us/playlist') ? true : 'That doesn\'t look like a valid url :('),
-  // });
+  console.log('\nFetching playlist data ...\n');
+  const response = await axios.get(input.url);
+  const html: string = response.data;
 
-  // const response = await axios.get(input.url);
-  // const html: string = response.data;
+  const playlist = Scraper.getPlaylist(html);
 
-  // console.log(Scraper.getPlaylist(html));
+  
+
 });
