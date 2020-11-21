@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { Song } from '../model/Song';
+
+type SearchResultType = 'album' | 'artist' | 'track' | 'playlist' | 'show' | 'episode';
 
 export default class SpotifyAPI {
   instance: AxiosInstance;
@@ -27,10 +28,10 @@ export default class SpotifyAPI {
     return response.data.id;
   }
 
-  async search(query: string, type: string, limit: number) {
+  async search(query: string, type: SearchResultType[], limit: number) {
     const results = await this.instance.get('v1/search', {
       params: {
-        q: query, type, limit,
+        q: query, type: type.join(','), limit,
       },
     });
 
@@ -43,9 +44,12 @@ export default class SpotifyAPI {
     return response.status;
   }
 
-  async searchClosestTrack(song: Song): Promise<string> {
-    const query = `${song.title}`; // album:${song.album} artist:${song.artist}`;
-    const results = await this.search(query, 'track', 1);
-    return results.data.tracks.items[0].uri;
+  async searchTrack(title: string, artist: string, limit: number) {
+    const cleanTitle = title.replace(/[,.!?]/g, ' ');
+
+    const query = `${cleanTitle} artist:${artist}`;
+    const results = await this.search(query, ['track'], limit);
+
+    return results.data.tracks.items;
   }
 }
