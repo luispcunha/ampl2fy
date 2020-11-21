@@ -4,7 +4,7 @@ Add **A**pple **M**usic **p**lay**l**ists to Spoti**fy**.
 # Running the app
 0. Make sure you have Node.js and npm installed, and clone the repository. 
 1. Create a Client ID and Secret on the Spotify developer dashboard.
-2. Add http://localhost:${PORT}/callback to the Redirect URIs on the application settings, being PORT whichever port you'd like to use.
+2. Add http://localhost:PORT/callback to the Redirect URIs on the application settings, being PORT whichever port you'd like to use.
 3. Create a .env file with variables CLIENT_ID, CLIENT_SECRET, and PORT.
 3. Install the dependencies with `npm i`.
 4. Compile with `npm run build`.
