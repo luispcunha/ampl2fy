@@ -13,4 +13,4 @@ Add **A**pple **M**usic **p**lay**l**ists to Spoti**fy**.
 # Usage
 
 - Follow the link on the console to login to Spotify. Then, you will be prompted for a playlist URL (such as https://music.apple.com/us/playlist/talking-heads-influences/pl.843aa9cdc41d447690088ad920086378), and a namesake private playlist will be added to your library with the songs of the Apple Music playlist.
-- The Spotify track that matches the Apple Music song is found by searching for tracks by name and artist. The first result that has a similar duration is used. However, due to song titles not always being consistent between both services, sometimes a matching song can't be found, in which case no song will be added to the playlist.
+- The Spotify track that matches the Apple Music song is found by searching for tracks by name and artist. The first result that has a similar duration is used. However, due to song titles not always being consistent between both services, sometimes a matching song can't be found. Songs without a match are not added to the playlist.
